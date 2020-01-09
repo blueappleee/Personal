@@ -1,1 +1,3 @@
-This program was used to watch for price of the monster isport freedom and notify when it reached a certian price. Was set up to run whenever chrome was opened by attatching a bash script to the chrome shortcut which called the program. Can be modified to watch price of other items easily.
+This program was used to watch for price of the monster isport freedom and notify when it reached a certian price. 
+Was set up to run whenever chrome was opened by attatching a bash script to the chrome shortcut which called the program. 
+Can be modified to watch price of other items easily.
