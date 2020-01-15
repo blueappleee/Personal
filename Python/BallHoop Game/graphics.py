@@ -2,6 +2,7 @@
 import pygame
 import time
 import physics
+import logic
 
 def dotpos(dotpositionx, dotpositiony):
     gamedisplay.blit(dot,(dotpositionx, dotpositiony))
@@ -9,39 +10,35 @@ def dotpos(dotpositionx, dotpositiony):
 def cball(ballpositionx, ballpositiony):
     gamedisplay.blit(ball, (ballpositionx, ballpositiony))
 
-def cannonb(cannonbx, cannonby):
-    gamedisplay.blit(cannon, (cannonbx, cannonby))
-
 def cannonw(cannonwx, cannonwy):
     gamedisplay.blit(cannon_wheel, (cannonwx, cannonwy))
 
+def angledisp(degree):
+    angle = pygame.font.Font('freesansbold.ttf', 20)
+    text = angle.render(('Angle: ' + str(round(degree, 3))), True, black)
+    
+    gamedisplay.blit(text,(display_width * 0.05, 20))
+    pygame.display.update()
+
+def powerdisp(slider):
+    powerlevel = (slider / 297.5) * 100
+    
+    power = pygame.font.Font('freesansbold.ttf', 20)
+    text = power.render(('Power: ' + str(round(powerlevel, 3)) + '%'), True, black)
+    
+    gamedisplay.blit(text,(display_width * 0.05, 50))
+    pygame.display.update()
+    
+
 def launchrotate(x, y): ## switch to cannon and get rid of complexity
     angle = physics.angle(x, y)
-    subtract1 = angle / 3
-    if angle >= 80:
-        ylaunch = 570 - subtract1
+    center = cannon.get_rect().center
+
+    newcannon = pygame.transform.rotate(cannon, angle)
+    newcannon.get_rect().center = center
+    
         
-    elif angle < 80 and angle > 65:
-        subtract2 = subtract1+3
-        ylaunch = 570 - subtract2
-        
-    elif angle < 65 and angle >= 50:
-        subtract2 = subtract1+4
-        ylaunch = 570 - subtract2
-        
-    elif angle < 50 and angle >= 25:
-        subtract2 = subtract1 + 4
-        ylaunch = 570 - subtract2
-        
-    elif angle >= 15 and angle <= 25:
-        subtract2 = subtract1 + 3
-        ylaunch = 570 - subtract2
-        
-    else:
-        subtract2 = subtract1 + 1
-        ylaunch = 570 - subtract2
-        
-    gamedisplay.blit((pygame.transform.rotate(cannon_wheel, angle)), (120, ylaunch))
+    gamedisplay.blit(newcannon, (120, 450))
 
 def guide(x, y, slider):
     ballpositiony = 0
@@ -58,8 +55,9 @@ def guide(x, y, slider):
         dotpositionx = ballpositionx - 5
         dotpositiony = ballpositiony + 15
         distance = distance + 50
-        
-        dotpos(dotpositionx, dotpositiony)
+
+        if dotpositiony <= display_height and dotpositiony >= 0:
+            dotpos(dotpositionx, dotpositiony)
         
     pygame.display.update()
 
@@ -129,7 +127,7 @@ def score(hit):
 
     time.sleep(2)
 
-    game_loop() ### add value to game loop to get rid of second game loop
+    logic.game_loop() ### add value to game loop to get rid of second game loop
 
 def displayBuild():
     gamedisplaybuild = pygame.display.set_mode((display_width, display_height))
@@ -143,9 +141,9 @@ display_width = 800
 display_height = 600
 
 dot = pygame.image.load('dot.png')
-ball = pygame.image.load('box.png')
-cannon = pygame.image.load('conveyer.png')
-cannon_wheel = pygame.image.load('launcher.png')
+ball = pygame.image.load('dot.png')
+cannon = pygame.image.load('cannon.png')
+cannon_wheel = pygame.image.load('cannon wheel.png')
 
 white = (255,255,255)
 black = (0,0,0)

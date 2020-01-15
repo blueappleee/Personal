@@ -1,8 +1,8 @@
 #physics
 import math
 
-def angle(x,y): 
-    y2 = y-85
+def angle(x,y): # adjust y2 and x2 offset to account for new cannon and wheel pictures
+    y2 = y - 85
     ytrue = 600 - y2 
     if x <= 50:
         xtrue = 1
@@ -13,7 +13,7 @@ def angle(x,y):
     return(theta)
 
 def power(slider):
-    Vi = slider/3
+    Vi = slider/2.25
     
     return(Vi)
 
@@ -33,7 +33,7 @@ def Viy(x, y, slider):
      
 
 def balllaunch(x, y, slider, distance, initialposx, initialposy):
-    gravity = 10
+    gravity = 9.8
     Vix2 = Vix(x, y, slider)
     Viy2 = Viy(x, y, slider)
     t = distance / Vix2
