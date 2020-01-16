@@ -13,7 +13,7 @@ def angle(x,y): # adjust y2 and x2 offset to account for new cannon and wheel pi
     return(theta)
 
 def power(slider):
-    Vi = slider/2.25
+    Vi = slider/2.2
     
     return(Vi)
 

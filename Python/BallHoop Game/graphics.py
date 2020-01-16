@@ -14,8 +14,8 @@ def cannonw(cannonwx, cannonwy):
     gamedisplay.blit(cannon_wheel, (cannonwx, cannonwy))
 
 def angledisp(degree):
-    angle = pygame.font.Font('freesansbold.ttf', 20)
-    text = angle.render(('Angle: ' + str(round(degree, 3))), True, black)
+    angle = pygame.font.Font('freesansbold.ttf', 15)
+    text = angle.render(('Angle: ' + str(round(degree, 3))), True, getblack())
     
     gamedisplay.blit(text,(display_width * 0.05, 20))
     pygame.display.update()
@@ -23,10 +23,10 @@ def angledisp(degree):
 def powerdisp(slider):
     powerlevel = (slider / 297.5) * 100
     
-    power = pygame.font.Font('freesansbold.ttf', 20)
-    text = power.render(('Power: ' + str(round(powerlevel, 3)) + '%'), True, black)
+    power = pygame.font.Font('freesansbold.ttf', 15)
+    text = power.render(('Power: ' + str(round(powerlevel, 3)) + '%'), True, getblack())
     
-    gamedisplay.blit(text,(display_width * 0.05, 50))
+    gamedisplay.blit(text,(display_width * 0.05, 45))
     pygame.display.update()
     
 
@@ -41,38 +41,42 @@ def launchrotate(x, y): ## switch to cannon and get rid of complexity
     gamedisplay.blit(newcannon, (120, 450))
 
 def guide(x, y, slider):
+    distance = 80
+    initialposx = 90 #these initial values are the back middle of the cannon
+    initialposy = 545
     ballpositiony = 0
     ballpositionx = 0
-    distance = 80
-    initialposx = 90
-    initialposy = 545
     
     while ballpositiony < 570 and ballpositionx <= 500 :  #change parameters after testing so it doesnt give ball trajectory so easy
         position = physics.balllaunch(x, y, slider, distance, initialposx, initialposy)
         
         ballpositionx = position[0]
         ballpositiony = position[1]
-        dotpositionx = ballpositionx - 5
-        dotpositiony = ballpositiony + 15
         distance = distance + 50
 
-        if dotpositiony <= display_height and dotpositiony >= 0:
-            dotpos(dotpositionx, dotpositiony)
+        if ballpositiony <= display_height and ballpositiony >= 0:
+            dotpos(ballpositionx, ballpositiony)
         
     pygame.display.update()
 
-def target(linestartx, linestarty, lineendx, lineendy): 
-    pygame.draw.line(gamedisplay, red, (750, 600), (750, 0), 20)
-    
-    bottomlinex = lineendx - 15
-    toplinex = linestartx - 15
-    
-    pygame.draw.line(gamedisplay, red, (linestartx, linestarty), (lineendx, lineendy), 15)
-    pygame.draw.line(gamedisplay, red, (linestartx + 7, linestarty), (toplinex, linestarty), 10)
-    pygame.draw.line(gamedisplay, red, (lineendx + 7, lineendy), (bottomlinex, lineendy), 10) 
+def target(linestarty, lineendy): 
+    length = lineendy - linestarty
+
+    interval = round(length / 5)
+
+    blue = getblue()
+    red = getred()
+
+    pygame.draw.line(gamedisplay, getblack(), (765, getheight()), (765, 0), 5)
+
+    pygame.draw.line(gamedisplay, blue, (745, linestarty), (745, linestarty + interval), 15)
+    pygame.draw.line(gamedisplay, red, (745, linestarty + interval + 1), (745, linestarty + (2 * interval)), 15)
+    pygame.draw.line(gamedisplay, getyellow(), (745, linestarty + (2 * interval) + 1), (745, linestarty + (3 * interval)), 15)
+    pygame.draw.line(gamedisplay, red, (745, linestarty + (3 * interval) + 1), (745, linestarty + (4 * interval)), 15)
+    pygame.draw.line(gamedisplay, blue, (745, linestarty + (4 * interval) + 1), (745, linestarty + (5 * interval)), 15)
 
 def text_objects(text, font):
-    textSurface = font.render(text, True, black)
+    textSurface = font.render(text, True, getblack())
     return textSurface, textSurface.get_rect()
     
 
@@ -86,6 +90,8 @@ def message_display(text):
 
 def instruction():
     welcome = pygame.font.Font('freesansbold.ttf', 40)
+
+    black = getblack()
     
     text = welcome.render(('Increase and Decrease Power on far right'), True, black)
     text2 = welcome.render(('Use Mouse to change launch angle'), True, black)
@@ -97,30 +103,33 @@ def instruction():
      
     
 def welcome():
-    welcome = pygame.font.Font('freesansbold.ttf',40)
-    text = welcome.render(('Welcome to ----'),True,black)
-    gamedisplay.blit(text,(display_width*0.30,display_height*0.3))
+    welcome = pygame.font.Font('freesansbold.ttf', 40)
+    text = welcome.render(('Welcome to ----'), True, getblack())
+    gamedisplay.blit(text,(display_width * 0.30, display_height * 0.3))
     
 
 def startmessage():
     startmessage = pygame.font.Font('freesansbold.ttf', 40)
-    text = startmessage.render(('Press Space to start'), True, black)
+    text = startmessage.render(('Press Space to start'), True, getblack())
     
     gamedisplay.blit(text,(display_width * 0.25, display_height * 0.4))
       
 
 def instructions():
     instructions = pygame.font.Font('freesansbold.ttf', 40)
-    text = instructions.render(('Press i for instructions'), True, black)
+    text = instructions.render(('Press i for instructions'), True, getblack())
     
     gamedisplay.blit(text,(display_width * 0.22, display_height * 0.5))
 
 def Miss():
     message_display('You Missed')
 
+def Hit():
+    message_display('Hit')
+
 def score(hit):
     score = pygame.font.Font('freesansbold.ttf', 50)
-    text = score.render(('Your Score:' + str(hit)), True, black)
+    text = score.render(('Your Score:' + str(hit)), True, getblack())
     
     gamedisplay.blit(text,(display_width * 0.31, display_height * 0.53))
     pygame.display.update()
@@ -135,6 +144,30 @@ def displayBuild():
 
     return gamedisplaybuild
 
+def getwidth():
+    return display_width
+
+def getheight():
+    return display_height
+
+def getwhite():
+    return (255,255,255)
+
+def getblack():
+    return (0,0,0)
+
+def getred():
+    return (255,0,0)
+
+def getblue():
+    return (0, 0, 255)
+
+def getgreen():
+    return (0, 255, 0)
+
+def getyellow():
+    return (255, 255, 0)
+
 pygame.init()
 
 display_width = 800
@@ -144,10 +177,6 @@ dot = pygame.image.load('dot.png')
 ball = pygame.image.load('dot.png')
 cannon = pygame.image.load('cannon.png')
 cannon_wheel = pygame.image.load('cannon wheel.png')
-
-white = (255,255,255)
-black = (0,0,0)
-red = (255,0,0)
 
 gamedisplay = displayBuild()
 

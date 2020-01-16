@@ -10,7 +10,7 @@ def intro_loop():
     
     while not play:
         while not Space:
-            graphics.gamedisplay.fill(graphics.white)
+            graphics.gamedisplay.fill(graphics.getwhite())
             
             if Instruct == True:
                 graphics.instruction()

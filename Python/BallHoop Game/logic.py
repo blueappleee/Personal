@@ -8,8 +8,10 @@ import sys
 
 pygame.init()
 
+def intersects(ball, object2):
+    pass
+
 def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
-    #TODO add percentage display to power and angle display for angle
     miss = False
     GameExit = False
     Click = False
@@ -23,18 +25,18 @@ def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
     ballpos3x = 40
     ballpos3y = 530
 
-    line1 = random.randint(50, 500)
-    line2 = line1 + random.randint(60, 75)
-    
-    linestartx = 725 
-    linestarty = line1
-    lineendx = 725
-    lineendy = line2
+    targetstarty = random.randint(25, 520)
+
+    if hit <= 20:
+        targetendy = targetstarty + 60 - (hit * 2)
+
+    else:
+        targetendy = targetstarty + 20
     
     while not GameExit:
         while not miss: 
-            while  ballpositiony < 570 and ballpositionx < ballend:
-                graphics.gamedisplay.fill(graphics.white)
+            while  ballpositiony < graphics.getheight() and ballpositionx < ballend:
+                graphics.gamedisplay.fill(graphics.getwhite())
                 
                 while not Click:
                     for event in pygame.event.get():
@@ -46,18 +48,15 @@ def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
                             pos = pygame.mouse.get_pos()
                             x = pos[0]
                             y = pos[1]
-                            
-                            #limits slider
-                            print(physics.angle(x,y))
 
-                            if x < 750:
+                            if x < 760:
                                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
                                     Click = True
 
                                 else:
                                     graphics.guide(x, y, slider)  
                                 
-                            if x >= 750 and x <= 800:
+                            if x >= 760 and x <= 800:
                                 ytruep = 600 - y
 
                                 if ytruep > 595:
@@ -67,13 +66,10 @@ def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
                                     ytruep = 5
                                 
                                 slider = ytruep / 2
-                                    
-                                print(slider)
 
-                            graphics.gamedisplay.fill(graphics.white)
-                            graphics.cannonw(40, 400)
-                            graphics.cball(40, 530) 
-                            graphics.target(linestartx, linestarty, lineendx, lineendy)
+                            graphics.gamedisplay.fill(graphics.getwhite())
+                            graphics.cannonw(40, 400) 
+                            graphics.target(targetstarty, targetendy)
                             graphics.launchrotate(x, y)
                             graphics.angledisp(physics.angle(x, y))
                             graphics.powerdisp(slider)
@@ -100,47 +96,49 @@ def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
                         
                         graphics.cball(ballpositionx, ballpositiony)
                         
-                        ballposy2 = ballpositiony + 40       
+                        ballposy2 = ballpositiony + 15       
                     
-                graphics.target(linestartx, linestarty, lineendx, lineendy)
+                graphics.target(targetstarty, targetendy)
                 graphics.cannonw(40, 400)
                 graphics.launchrotate(x, y)
                 graphics.angledisp(physics.angle(x, y))
                 graphics.powerdisp(slider)
 
                 if ballpositionx <= 670 and ballpositionx >= 666:
-                    if ballpositiony >= lineendy + 15 or ballpositiony + 40 <= linestarty - 15:
+                    if ballpositiony >= targetendy + 15 or ballpositiony + 40 <= targetstarty - 15:
                         ballend = 680
                         
-                    elif ballpositiony > linestarty and ballpositiony + 40 < lineendy:
+                    elif ballpositiony > targetstarty and ballpositiony + 40 < targetendy:
                         ballend = 680
                     
-                    elif ballpositiony >= lineendy and ballpositiony <= lineendy + 10:
+                    elif ballpositiony >= targetendy and ballpositiony <= targetendy + 10:
                         ballend = ballend
                         
-                    elif ballpositiony + 40 >= lineendy and ballpositiony + 40 <= lineendy + 10:
+                    elif ballpositiony + 40 >= targetendy and ballpositiony + 40 <= targetendy + 10:
                         ballend = ballend
                         
-                    elif ballpositiony >= linestarty and ballpositiony <= linestarty - 10:
+                    elif ballpositiony >= targetstarty and ballpositiony <= targetstarty - 10:
                         ballend = ballend
                         
-                    elif ballpositiony + 40 >= linestarty and ballpositiony + 40 <= linestarty + 10:
+                    elif ballpositiony + 40 >= targetstarty and ballpositiony + 40 <= targetstarty + 10:
                         ballend = ballend
                 
                 if ballpositionx <= 682 and ballpositionx >= 680: ## change ball variable  ### change to a box and make game launching box onto shelf
-                    if ballpositiony < lineendy and ballpositiony + 40 > linestarty:
+                    if ballpositiony < targetendy and ballpositiony + 40 > targetstarty:
+                        graphics.Hit()
+                        
                         time.sleep(0.5)
                         hit = hit + 1
                         
                         game_loop(slider, hit, x, y)
                         
-                    elif ballpositiony > lineendy or ballpositiony + 40 < linestarty:
+                    elif ballpositiony > targetendy or ballpositiony + 40 < targetstarty:
                         ballend = 700
                  
                 pygame.display.update()
                 graphics.clock.tick(60)
 
-            graphics.target(linestartx, linestarty, lineendx, lineendy) 
+            graphics.target(targetstarty, targetendy) 
             graphics.cball(ballpositionx, ballpositiony)
             graphics.cannonw(40, 400)
             graphics.launchrotate(x, y)
