@@ -59,6 +59,30 @@ def guide(x, y, slider):
         
     pygame.display.update()
 
+def powerslider(slider):
+    level = 600 - ((slider * 2))
+
+    slider = slider * 2
+    
+    disp = getheight()
+
+    pygame.draw.line(gamedisplay, getblack(), (783, level - 5), (783, level), 32)
+
+    for i in range(0, disp - int(level), 2):
+
+        red = 0 + (i / 2)
+
+        if red > 255:
+            red = 255
+        
+        green = 255 - (i / 2)
+
+        if green < 0:
+            green = 0
+        
+        pygame.draw.line(gamedisplay, (red, green, 0), (783, disp - i), (783, disp - i - 2), 32) 
+    
+
 def target(linestarty, lineendy): 
     length = lineendy - linestarty
 

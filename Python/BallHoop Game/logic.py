@@ -74,6 +74,7 @@ def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
                             graphics.angledisp(physics.angle(x, y))
                             graphics.powerdisp(slider)
                             graphics.guide(x, y, slider)
+                            graphics.powerslider(slider)
 
                             pygame.display.update()
 
@@ -103,6 +104,7 @@ def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
                 graphics.launchrotate(x, y)
                 graphics.angledisp(physics.angle(x, y))
                 graphics.powerdisp(slider)
+                graphics.powerslider(slider)
 
                 if ballpositionx <= 670 and ballpositionx >= 666:
                     if ballpositiony >= targetendy + 15 or ballpositiony + 40 <= targetstarty - 15:
@@ -144,6 +146,7 @@ def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
             graphics.launchrotate(x, y)
             graphics.angledisp(physics.angle(x, y))
             graphics.powerdisp(slider)
+            graphics.powerslider(slider)
 
             graphics.Miss()
             graphics.score(hit)                    
