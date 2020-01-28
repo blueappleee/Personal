@@ -1,0 +1,19 @@
+finish intersects and use for collision for new models
+
+set object locations based on new models
+
+make target moving which speed increases with level to a max and target which size decreases with level to a minimum
+	build targetx, y into intersects so doesnt need to be added later for this function
+
+add pause menu with option to exit or to get instructions
+	called in events when esc called then return to continue gameloop
+
+add scoring based on where collision is 3 for bullseye, 2 for next and 1 for edges
+
+add floor
+
+add platform for cannon to stand on
+
+draw background
+
+figure out name lol
