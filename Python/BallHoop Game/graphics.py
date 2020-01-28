@@ -91,7 +91,7 @@ def target(linestarty, lineendy):
     blue = getblue()
     red = getred()
 
-    pygame.draw.line(gamedisplay, getblack(), (765, getheight()), (765, 0), 5)
+    pygame.draw.line(gamedisplay, getblack(), (765, getheight()), (765, 0), 5)#make black
 
     pygame.draw.line(gamedisplay, blue, (745, linestarty), (745, linestarty + interval), 15)
     pygame.draw.line(gamedisplay, red, (745, linestarty + interval + 1), (745, linestarty + (2 * interval)), 15)

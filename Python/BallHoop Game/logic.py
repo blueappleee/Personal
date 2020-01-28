@@ -8,13 +8,32 @@ import sys
 
 pygame.init()
 
-def intersects(ball, object2):
-    pass
+def ballintersects(ballx, bally, object2y, object2x, object2len, object2width):
+    ballcentx = ballx + 7
+    ballcenty = bally + 7
 
-def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
+    if ballcentx + 7 >= object2x:
+        ## intersects on middle edge of ball
+
+        print(ballcenty, object2y, object2y + object2len)
+        if ballcenty >= object2y and ballcenty <= (object2y + object2len):
+            return True
+
+    #use pythagrian theorem 
+    #if ballcentx + 7 >= (object2x):
+     #   diffx = ballcentx - object2x
+      #  diffy = ballcenty - object2y
+        
+        #if ballcentx + 7 >= (object2x + ):
+        
+    else:
+        return False
+
+def game_loop(slider = 297.5, hit = 0, launchx = 45, launchy = 45):
     miss = False
     GameExit = False
     Click = False
+    collide = False
     LEFT = 1
     distance = 0
     initialposx = 94
@@ -32,10 +51,12 @@ def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
 
     else:
         targetendy = targetstarty + 20
+
+    targetlen = targetendy - targetstarty
     
     while not GameExit:
         while not miss: 
-            while  ballpositiony < graphics.getheight() and ballpositionx < ballend:
+            while  ballpositiony < graphics.getheight() - 10 and not collide:
                 graphics.gamedisplay.fill(graphics.getwhite())
                 
                 while not Click:
@@ -54,33 +75,37 @@ def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
                                     Click = True
 
                                 else:
-                                    graphics.guide(x, y, slider)  
+                                    launchx = x
+                                    launchy = y
+                                    graphics.guide(launchx, launchy, slider)  
                                 
-                            if x >= 760 and x <= 800:
-                                ytruep = 600 - y
+                            if x >= 765 and x <= 800:
+                                mouse = pygame.mouse.get_pressed() 
+                                if mouse[0] == True:
+                                    ytruep = 600 - y
 
-                                if ytruep > 595:
-                                    ytruep = 595
+                                    if ytruep > 595:
+                                        ytruep = 595
 
-                                if ytruep < 5:
-                                    ytruep = 5
+                                    if ytruep < 5:
+                                        ytruep = 5
                                 
-                                slider = ytruep / 2
+                                    slider = ytruep / 2
 
                             graphics.gamedisplay.fill(graphics.getwhite())
                             graphics.cannonw(40, 400) 
                             graphics.target(targetstarty, targetendy)
-                            graphics.launchrotate(x, y)
-                            graphics.angledisp(physics.angle(x, y))
+                            graphics.launchrotate(launchx, launchy)
+                            graphics.angledisp(physics.angle(launchx, launchy))
+                            graphics.guide(launchx, launchy, slider)
                             graphics.powerdisp(slider)
-                            graphics.guide(x, y, slider)
                             graphics.powerslider(slider)
 
                             pygame.display.update()
 
                             graphics.clock.tick(60)
                     
-                distance = distance + 4
+                distance = distance + 3
                     
                 if Click == True:
                     if ballpos3x < 88:
@@ -101,41 +126,26 @@ def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
                     
                 graphics.target(targetstarty, targetendy)
                 graphics.cannonw(40, 400)
-                graphics.launchrotate(x, y)
-                graphics.angledisp(physics.angle(x, y))
+                graphics.launchrotate(launchx, launchy)
+                graphics.angledisp(physics.angle(launchx, launchy))
                 graphics.powerdisp(slider)
                 graphics.powerslider(slider)
-
-                if ballpositionx <= 670 and ballpositionx >= 666:
-                    if ballpositiony >= targetendy + 15 or ballpositiony + 40 <= targetstarty - 15:
-                        ballend = 680
-                        
-                    elif ballpositiony > targetstarty and ballpositiony + 40 < targetendy:
-                        ballend = 680
-                    
-                    elif ballpositiony >= targetendy and ballpositiony <= targetendy + 10:
-                        ballend = ballend
-                        
-                    elif ballpositiony + 40 >= targetendy and ballpositiony + 40 <= targetendy + 10:
-                        ballend = ballend
-                        
-                    elif ballpositiony >= targetstarty and ballpositiony <= targetstarty - 10:
-                        ballend = ballend
-                        
-                    elif ballpositiony + 40 >= targetstarty and ballpositiony + 40 <= targetstarty + 10:
-                        ballend = ballend
                 
-                if ballpositionx <= 682 and ballpositionx >= 680: ## change ball variable  ### change to a box and make game launching box onto shelf
-                    if ballpositiony < targetendy and ballpositiony + 40 > targetstarty:
+                if ballpositionx >= 722: ## change ball variable  ### change to a box and make game launching box onto shelf
+                    hittarget = ballintersects(ballpositionx, ballpositiony, targetstarty, 738, targetlen, 15)
+                    print(hittarget)
+                    if hittarget:
+                        collide = True
+                        
                         graphics.Hit()
                         
                         time.sleep(0.5)
                         hit = hit + 1
                         
-                        game_loop(slider, hit, x, y)
+                        game_loop(slider, hit, launchx, launchy)
                         
-                    elif ballpositiony > targetendy or ballpositiony + 40 < targetstarty:
-                        ballend = 700
+                    elif ballpositionx >= 747:
+                        collide = True
                  
                 pygame.display.update()
                 graphics.clock.tick(60)
@@ -143,8 +153,8 @@ def game_loop(slider = 297.5, hit = 0, x = 45, y = 45):
             graphics.target(targetstarty, targetendy) 
             graphics.cball(ballpositionx, ballpositiony)
             graphics.cannonw(40, 400)
-            graphics.launchrotate(x, y)
-            graphics.angledisp(physics.angle(x, y))
+            graphics.launchrotate(launchx, launchy)
+            graphics.angledisp(physics.angle(launchx, launchy))
             graphics.powerdisp(slider)
             graphics.powerslider(slider)
 
