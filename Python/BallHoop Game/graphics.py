@@ -119,11 +119,13 @@ def instruction():
     
     text = welcome.render(('Increase and Decrease Power on far right'), True, black)
     text2 = welcome.render(('Use Mouse to change launch angle'), True, black)
-    text3 = welcome.render(('Get the box onto the shelf'), True, black)
+    text3 = welcome.render(('Click left mouse to shoot'), True, black)
+    text4 = welcome.render(('Hit the target to score points'), True, black)
      
-    gamedisplay.blit(text, (display_width * 0.003, display_height * 0.3))
-    gamedisplay.blit(text2, (display_width * 0.08, display_height * 0.4))
-    gamedisplay.blit(text3, (display_width * 0.18, display_height * 0.5)) 
+    gamedisplay.blit(text, (display_width * 0.003, display_height * 0.2))
+    gamedisplay.blit(text2, (display_width * 0.08, display_height * 0.3))
+    gamedisplay.blit(text3, (display_width * 0.2, display_height * 0.4))
+    gamedisplay.blit(text4, (display_width * 0.18, display_height * 0.5))
      
     
 def welcome():
