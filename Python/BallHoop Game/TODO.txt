@@ -17,3 +17,5 @@ add platform for cannon to stand on
 draw background
 
 figure out name lol
+
+make more aesthetically pleasing once functionally finished
